@@ -7,10 +7,9 @@ export default defineConfig({
   build: {
     // Activamos el Modo Librería
     lib: {
-      // Le decimos cuál es el archivo principal que creamos en el Paso 1
       entry: resolve(__dirname, 'src/index.js'),
-      name: 'MisAtomosUI', // Nombre global de la variable
-      fileName: (format) => `mis-atomos-ui.${format}.js`
+      name: 'AleonsvqAtoms',
+      fileName: 'index' // <-- SÚPER SIMPLE Y PREDECIBLE
     },
     rollupOptions: {
       // ¡MUY IMPORTANTE! Asegurarnos de externalizar Vue.

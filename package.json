@@ -1,22 +1,20 @@
 {
   "name": "@aleonsvq/atoms",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "type": "module",
   "description": "Mi propio UI Kit atómico con estilo neón para Vue 3",
   "author": "Tu Nombre",
   "license": "MIT",
   
-  
   "files": ["dist"],
-  "main": "./dist/mis-atomos-ui.umd.js",
-  "module": "./dist/mis-atomos-ui.es.js",
+  "main": "./dist/index.umd.cjs",
+  "module": "./dist/index.js",
   "exports": {
     ".": {
-      "import": "./dist/mis-atomos-ui.es.js",
-      "require": "./dist/mis-atomos-ui.umd.js"
+      "import": "./dist/index.js",
+      "require": "./dist/index.umd.cjs"
     },
-    
-    "./style.css": "./dist/style.css" 
+    "./style.css": "./dist/index.css" 
   },
   "scripts": {
     "dev": "vite",
