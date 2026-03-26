@@ -49,7 +49,13 @@ const router = createRouter({
       path: '/testing',
       name: 'testing',
       component: () => import('../views/TestingView.vue')
-    }
+    },
+    // ¡NUEVA RUTA DE TDD!
+    {
+      path: '/tdd',
+      name: 'tdd',
+      component: () => import('../views/TddView.vue')
+    },
   ]
 })
 

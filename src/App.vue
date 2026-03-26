@@ -15,6 +15,7 @@ const menuNavegacion = [
   { text: 'Seguridad', href: '/seguridad' },
   { text: 'Git & GitHub', href: '/git' },
   { text: 'Testing', href: '/testing' },
+  { text: 'TDD', href: '/tdd' },
   { text: 'Flujo Full-Stack', href: '/flujo' }
 ]
 </script>
