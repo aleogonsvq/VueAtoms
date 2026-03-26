@@ -9,9 +9,13 @@ import AtomFooter from './components/atoms/AtomFooter.vue'
 // Definimos el menú alimentando nuestro átomo inteligente
 const menuNavegacion = [
   { text: 'Frontend (Vue 3)', href: '/' },
+  { text: 'Arquitectura UI', href: '/patrones' },
   { text: 'Backend (Express)', href: '/backend' },
   { text: 'Bases de Datos', href: '/database' },
-  { text: 'Git & GitHub', href: '/git' }
+  { text: 'Seguridad', href: '/seguridad' },
+  { text: 'Git & GitHub', href: '/git' },
+  { text: 'Testing', href: '/testing' },
+  { text: 'Flujo Full-Stack', href: '/flujo' }
 ]
 </script>
 

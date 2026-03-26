@@ -25,6 +25,30 @@ const router = createRouter({
       path: '/git',
       name: 'git',
       component: () => import('../views/GitView.vue')
+    },
+    // ¡NUEVA RUTA AÑADIDA AQUÍ!
+    {
+      path: '/patrones',
+      name: 'patrones',
+      component: () => import('../views/PatternsView.vue')
+    },
+    // ¡NUEVA RUTA AÑADIDA AQUÍ!
+    {
+      path: '/flujo',
+      name: 'flujo',
+      component: () => import('../views/FlowView.vue')
+    },
+    // ¡NUEVA RUTA DE SEGURIDAD!
+    {
+      path: '/seguridad',
+      name: 'seguridad',
+      component: () => import('../views/SecurityView.vue')
+    },
+    // ¡NUEVA RUTA DE TESTING!
+    {
+      path: '/testing',
+      name: 'testing',
+      component: () => import('../views/TestingView.vue')
     }
   ]
 })

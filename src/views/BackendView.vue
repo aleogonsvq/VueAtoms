@@ -9,9 +9,11 @@ import AtomCard from '../components/atoms/AtomCard.vue'
 import AtomTable from '../components/atoms/AtomTable.vue'
 import AtomUl from '../components/atoms/AtomUl.vue'
 import AtomImage from '../components/atoms/AtomImage.vue'
+import AtomCodeBlock from '../components/atoms/AtomCodeBlock.vue'
 
 const conceptosBackend = [
   'Node.js & Express: Ejecución asíncrona y enrutamiento minimalista.',
+  'Variables de Entorno: Ocultar secretos y configuración dinámica usando archivos .env.',
   'CORS: Seguridad del navegador para peticiones cruzadas.',
   'Middlewares: El patrón de diseño central de Express.',
   'APIs RESTful: Arquitectura basada en recursos y verbos HTTP (CRUD).',
@@ -43,28 +45,71 @@ const conceptosBackend = [
       <p class="extended-text">
         <strong>Node.js</strong> es un entorno de ejecución que nos permite escribir JavaScript en el servidor. 
         Su mayor ventaja es su arquitectura <em>Non-Blocking I/O</em> impulsada por el Event Loop, permitiendo 
-        atender miles de peticiones HTTP simultáneamente sin quedarse bloqueado esperando a la base de datos.
+        atender miles de peticiones HTTP simultáneamente sin quedarse bloqueado.
       </p>
       
-      <pre><code># Inicialización e instalación de las herramientas principales
+      <AtomCodeBlock language="bash" fileName="Terminal">
+# Inicialización e instalación de las herramientas principales
 npm init -y
 npm install express cors dotenv
-npm install --save-dev nodemon</code></pre>
-
-      <pre><code>import express from 'express';
-import dotenv from 'dotenv';
-
-dotenv.config();
-
-const app = express();
-app.use(express.json()); // Entender JSON en el body
-
-app.listen(3000, () => {
-  console.log('🚀 Servidor backend operando en el puerto 3000');
-});</code></pre>
+npm install --save-dev nodemon
+      </AtomCodeBlock>
     </AtomSection>
 
-    <AtomH2>Módulo 2: CORS y el Pipeline de Middlewares</AtomH2>
+    <AtomH2>Módulo 2: Variables de Entorno y Seguridad (.env)</AtomH2>
+    <AtomSection>
+      <p class="extended-text">
+        Escribir contraseñas, URLs de bases de datos o claves secretas (como la de JWT) directamente en tu código fuente 
+        es una práctica terrible conocida como <em>Hardcoding</em>. Si haces eso, cualquiera que lea tu código tendrá acceso a tus sistemas. 
+        Para solucionarlo, usamos <strong>Variables de Entorno</strong>.
+      </p>
+      
+      
+
+      <div class="grid-cards">
+        <AtomCard>
+          <template #header><h3 style="color: #3498db;">El archivo <code>.env</code></h3></template>
+          <p class="extended-text" style="font-size: 0.95rem;">
+            Es un archivo de texto simple que se sitúa en la raíz de tu proyecto. En él, guardas pares de clave-valor. 
+            Este archivo simula las variables del sistema operativo de tu servidor.
+          </p>
+          <pre style="margin-top: 0.5rem; padding: 1rem;"><code>PORT=3000
+DATABASE_URL="postgresql://usuario:pass@localhost:5432/mi_db"
+JWT_SECRET="una_clave_super_secreta_e_imposible_de_adivinar"</code></pre>
+        </AtomCard>
+        
+        <AtomCard>
+          <template #header><h3 style="color: #2ecc71;">El paquete <code>dotenv</code></h3></template>
+          <p class="extended-text" style="font-size: 0.95rem;">
+            Node.js no lee el archivo <code>.env</code> por arte de magia. Necesitamos ejecutar <code>dotenv.config()</code> 
+            lo más arriba posible en nuestro <code>index.js</code>. Esto inyectará los valores en el objeto global <code>process.env</code>.
+          </p>
+          <pre style="margin-top: 0.5rem; padding: 1rem;"><code>import dotenv from 'dotenv';
+dotenv.config();
+
+// Uso seguro de la variable
+const puerto = process.env.PORT;
+const token = jwt.sign(datos, process.env.JWT_SECRET);</code></pre>
+        </AtomCard>
+      </div>
+
+      <div style="margin-top: 2rem; border: 2px dashed #e74c3c; padding: 1.5rem; border-radius: 8px; background-color: rgba(231, 76, 60, 0.1);">
+        <h3 style="color: #e74c3c; margin-top: 0;">🚨 REGLA DE ORO: El archivo <code>.gitignore</code></h3>
+        <p class="extended-text" style="margin-bottom: 0;">
+          <strong>NUNCA, jamás subas tu archivo <code>.env</code> a GitHub o cualquier repositorio público.</strong> 
+          Existen bots que escanean GitHub 24/7 buscando archivos <code>.env</code> expuestos para robar credenciales de bases de datos o minar criptomonedas usando tus cuentas de AWS. 
+          <br><br>
+          Antes de hacer tu primer commit, debes crear un archivo llamado <code>.gitignore</code> en la raíz del proyecto y escribir dentro: 
+          <br>
+          <code>node_modules/</code><br>
+          <code>.env</code>
+          <br><br>
+          <em>Nota: Lo habitual es subir un archivo llamado <code>.env.example</code> con las variables vacías (ej: <code>JWT_SECRET=</code>) para que otros desarrolladores sepan qué variables necesitan crear en sus propios ordenadores.</em>
+        </p>
+      </div>
+    </AtomSection>
+
+    <AtomH2>Módulo 3: CORS y el Pipeline de Middlewares</AtomH2>
     <AtomSection>
       <h3 style="color: #f1c40f;">¿Qué diablos es CORS?</h3>
       
@@ -90,7 +135,7 @@ const loggerMiddleware = (req, res, next) => {
 app.use(loggerMiddleware);</code></pre>
     </AtomSection>
 
-    <AtomH2>Módulo 3: Creación de Endpoints y APIs RESTful</AtomH2>
+    <AtomH2>Módulo 4: Creación de Endpoints y APIs RESTful</AtomH2>
     <AtomSection>
       <p class="extended-text">
         Las APIs RESTful usan <strong>Recursos</strong> (ej. <code>/api/usuarios</code>) y <strong>Verbos HTTP</strong> para definir la acción.
@@ -103,51 +148,27 @@ app.use(loggerMiddleware);</code></pre>
       ]" />
     </AtomSection>
 
-    <AtomH2>Módulo 4: Códigos de Estado HTTP</AtomH2>
+    <AtomH2>Módulo 5: Códigos de Estado HTTP</AtomH2>
     <AtomSection>
       <p class="extended-text">
-        Una API profesional no solo devuelve datos, sino que se comunica mediante <strong>Códigos de Estado HTTP</strong>. 
-        Esto le permite al Frontend (Vue, React, Angular) saber instantáneamente si la operación fue un éxito, si el usuario cometió un error, o si el servidor explotó, sin tener que analizar el texto de la respuesta.
+        Una API profesional se comunica mediante <strong>Códigos de Estado HTTP</strong>, permitiendo al Frontend saber 
+        instantáneamente el resultado de la operación.
       </p>
       
       
-
-      <p class="extended-text">
-        Se dividen en tres categorías principales que debes dominar:
-      </p>
 
       <AtomTable :headers="['Código', 'Mensaje', 'Categoría', 'Cuándo usarlo en Express']" :rows="[
         ['200', 'OK', 'Éxito (2xx)', 'Respuesta estándar para peticiones GET, PUT o DELETE exitosas.'],
-        ['201', 'Created', 'Éxito (2xx)', 'Exclusivo para POST cuando se crea un recurso nuevo con éxito.'],
-        ['400', 'Bad Request', 'Error Cliente (4xx)', 'El frontend envió datos incorrectos, mal formateados o faltan campos.'],
-        ['401', 'Unauthorized', 'Error Cliente (4xx)', 'El usuario no ha enviado un Token JWT, o el Token no es válido.'],
-        ['403', 'Forbidden', 'Error Cliente (4xx)', 'El token es válido, pero el usuario no tiene permisos (ej. no es Admin).'],
-        ['404', 'Not Found', 'Error Cliente (4xx)', 'La URL no existe o el recurso buscado (ej. usuario ID 5) no se encontró.'],
-        ['500', 'Internal Error', 'Error Servidor (5xx)', 'Tu código falló (ej. la base de datos se cayó). Nunca es culpa del cliente.']
+        ['201', 'Created', 'Éxito (2xx)', 'Exclusivo para POST cuando se crea un recurso nuevo.'],
+        ['400', 'Bad Request', 'Error Cliente (4xx)', 'Datos incorrectos, mal formateados o faltan campos.'],
+        ['401', 'Unauthorized', 'Error Cliente (4xx)', 'Falta Token JWT o es inválido.'],
+        ['403', 'Forbidden', 'Error Cliente (4xx)', 'Token válido, pero el usuario no tiene permisos.'],
+        ['404', 'Not Found', 'Error Cliente (4xx)', 'La URL o el recurso buscado no existe.'],
+        ['500', 'Internal Error', 'Error Servidor (5xx)', 'Fallo en tu código (ej. base de datos caída).']
       ]" />
-
-      <h3 style="color: #f1c40f; margin-top: 2rem;">Implementación en Express</h3>
-      <p class="extended-text">Para enviar estos códigos, encadenamos el método <code>.status()</code> antes de enviar el JSON.</p>
-      <pre><code>app.post('/api/login', (req, res) => {
-  const { email, password } = req.body;
-  
-  if (!email || !password) {
-    // 400: El cliente hizo una mala petición (faltan datos)
-    return res.status(400).json({ error: 'Faltan credenciales' });
-  }
-  
-  const usuario = buscarUsuarioDB(email);
-  if (!usuario) {
-    // 404: El recurso no existe
-    return res.status(404).json({ error: 'Usuario no encontrado' });
-  }
-
-  // 200: Todo correcto (express usa 200 por defecto si omites .status)
-  res.status(200).json({ mensaje: 'Login exitoso', token: '...' });
-});</code></pre>
     </AtomSection>
 
-    <AtomH2>Módulo 5: Autenticación con JWT (JSON Web Tokens)</AtomH2>
+    <AtomH2>Módulo 6: Autenticación con JWT (JSON Web Tokens)</AtomH2>
     <AtomSection>
       <p class="extended-text">
         Las APIs REST son <strong>Stateless</strong> (sin estado). El servidor no "recuerda" si estás logueado. Para resolverlo usamos <strong>JWT</strong>.
@@ -159,7 +180,7 @@ app.use(loggerMiddleware);</code></pre>
         <AtomCard>
           <template #header><h3>¿Qué es un JWT?</h3></template>
           <p class="extended-text" style="font-size: 0.95rem;">
-            Consta de Header, Payload (datos del usuario) y Signature. El servidor lo firma criptográficamente con una clave secreta. Si el cliente altera el Payload, la firma no coincidirá y se rechazará (Código HTTP 401/403).
+            Consta de Header, Payload (datos del usuario) y Signature. El servidor lo firma criptográficamente con una clave secreta (guardada en tu <code>.env</code>). Si el cliente altera el Payload, la firma no coincidirá y se rechazará (401/403).
           </p>
         </AtomCard>
         
@@ -179,6 +200,7 @@ const verificarToken = (req, res, next) => {
   if (!token) return res.status(401).json({ error: 'Acceso denegado. No hay token.' });
 
   try {
+    // Usamos el secreto guardado a salvo en el .env
     const payload = jwt.verify(token, process.env.JWT_SECRET);
     req.usuario = payload; 
     next(); 
@@ -188,7 +210,7 @@ const verificarToken = (req, res, next) => {
 };</code></pre>
     </AtomSection>
 
-    <AtomH2>Módulo 6: Acceso a la Base de Datos</AtomH2>
+    <AtomH2>Módulo 7: Acceso a la Base de Datos</AtomH2>
     <AtomSection>
       <p class="extended-text">
         Evitamos escribir SQL puro para prevenir inyecciones SQL. Usamos un <strong>ORM (Object-Relational Mapping)</strong> como <em>Prisma</em>. Mapea las tablas y las convierte en métodos de JS asíncronos y tipados.
@@ -203,7 +225,6 @@ app.get('/api/usuarios', async (req, res) => {
     });
     res.status(200).json(usuarios);
   } catch (error) {
-    // 500: Error interno del servidor
     res.status(500).json({ error: 'Error interno de base de datos' });
   }
 });</code></pre>
